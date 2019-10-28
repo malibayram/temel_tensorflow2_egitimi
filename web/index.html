@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>28 Ekim</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@1.0.0/dist/tf.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+</head>
+<body>
+<div class="container">
+    <h1>Metin Duygu Analizi</h1>
+    <label for="cumle">Alttaki Kutucuğa Duygu Değerini Görmek İstediğiniz Cümleyi Girin</label>
+    <textarea class="form-control"
+              id="cumle">tasarımı harika ancak kargo çok geç geldi ve ürün açılmıştı tavsiye etmem</textarea>
+    <br/>
+    <button class="btn btn-success" onclick="olc()">Sonucu Getir</button>
+    <h3 id="sonuc"></h3>
+</div>
+<script>
+    let model;
+    let word2index;
+
+    async function modeliYukle() {
+        model = await tf.loadLayersModel('../json_model/model.json');
+    }
+
+    modeliYukle().then(function () {
+        console.log('model yüklendi ');
+    });
+
+    function olc() {
+
+        const yorum = $('#cumle').val();
+
+        let tens = [];
+
+        for (let i = 0; i < 50; i++) {
+            tens[i] = 0;
+        }
+
+        const yorum_kelimeler = yorum.split(' ');
+        $.each(yorum_kelimeler, function (index, value) {
+            console.log(index + ": " + value);
+            if (index < 50) {
+                tens[index] = word2index[value.toLowerCase()] || 0;
+            }
+        });
+
+        const _tokens = tf.tensor([tens]);
+        model.predict(_tokens).data().then(predictions => {
+            console.log('Tahmin edilen Scor :: ', predictions[0].toFixed(4) * 100);
+            $('#sonuc').html('Değerlendirilen Sonuc :: ' + parseFloat(predictions[0] * 100).toString().substring(0, 5));
+        });
+        console.log(tens);
+    }
+
+    $.getJSON("../tokenizer.json", function (data) {
+//        console.log(data);
+        word2index = data;
+    });
+
+</script>
+</body>
+</html>
