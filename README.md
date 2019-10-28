@@ -1,4 +1,4 @@
-# Temel Tensoflow 2.0 Eğitimi
+# Temel Tensoflow Eğitimi
 
 ## Modelin çalışır haline [buradan](http://dershub.com/ml/28ekim/web/index.html) ulaşabilirsiniz
 
