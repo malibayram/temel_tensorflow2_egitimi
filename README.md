@@ -1,5 +1,7 @@
 # Temel Tensoflow 2.0 Eğitimi
 
+## Modelin çalışır haline [buradan](http://dershub.com/ml/28ekim/web/index.html) ulaşabilirsiniz
+
 ## Yararlandığım Udemy Kursları
 
 * [Python ile Makine Öğrenmesi - Dr. Şadi Evren Şeker](https://www.udemy.com/course/makine-ogrenmesi/)
